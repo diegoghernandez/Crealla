@@ -38,7 +38,7 @@ public class ComandosComponente
          description: "Crea un archivo css"
       );
 
-      var comandoComponente = new Command("componente", "Crea las plantillas para un componente, test, css de React o Vue"){
+      var comandoComponente = new Command("componente", "Crea plantillas para un componente de React o Vue con o sin test y css"){
          argumentoRuta,
          opcionTest,
          opcionCSS
