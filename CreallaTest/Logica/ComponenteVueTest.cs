@@ -24,15 +24,25 @@ public class ComponenteVueTest : IClassFixture<DirectorioFixturas>
    """;
 
    const string TEST_VUE = """
+   import { i18n } from '@/assets/locales/i18n'
    import PruebaTest from '@/components/common/PruebaTest.vue'
+   import { LOCALES } from '@/constants/locales'
+   import { t } from '@/utils/translation'
    import { cleanup, render, screen } from '@testing-library/vue'
-   import { afterEach, describe, expect, it } from 'vitest'
+   import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 
-   describe('PruebaTest component tests', () => {
-      afterEach(() => cleanup())
+   LOCALES.forEach((locale) => {
+      describe(`${locale}: PruebaTest component tests`, () => {
+         beforeEach(() => (i18n.global.locale.value = locale))
+         afterEach(() => cleanup())
 
-      it('Should render properly', () => {
-         render(PruebaTest)
+         it('Should render properly', () => {
+            render(PruebaTest, {
+               global: {
+                  plugins: [i18n],
+               },
+            })
+         })
       })
    })
 

@@ -69,19 +69,35 @@ public class ComponenteVue : IComponentes
       }
 
       var componenteVue = $$"""
+      import { i18n } from '@/assets/locales/i18n'
       import {{nombreComponente}} from '@/components/{{rutaComponente}}'
+      import { LOCALES } from '@/constants/locales'
+      import { t } from '@/utils/translation'
       import { cleanup, render, screen } from '@testing-library/vue'
-      import { afterEach, describe, expect, it } from 'vitest'
+      import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 
-      describe('{{nombreComponente}} component tests', () => {
-         afterEach(() => cleanup())
+      LOCALES.forEach((locale) => {
+         describe(`${locale}: {{nombreComponente}} component tests`, () => {
+            beforeEach(() => (i18n.global.locale.value = locale))
+            afterEach(() => cleanup())
 
-         it('Should render properly', () => {
-            render({{nombreComponente}})
+            it('Should render properly', () => {
+               render({{nombreComponente}}, {
+                  global: {
+                     plugins: [i18n],
+                  },
+               })
+            })
          })
       })
 
       """;
+
+      if (File.Exists(ruta + archivoTest))
+      {
+         Console.WriteLine("El test ya existe");
+         return;
+      }
 
       try
       {
