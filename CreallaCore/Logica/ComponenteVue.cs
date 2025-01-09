@@ -16,6 +16,13 @@ public class ComponenteVue : IComponentes
          return;
       }
 
+      var ruta = $"{_DIRECTORIO_RAIZ}/components/{rutaComponente}";
+      if (File.Exists(ruta))
+      {
+         Console.WriteLine("El componente ya existe");
+         return;
+      }
+
       var componenteVue = """
       <script setup></script>
 
@@ -31,11 +38,10 @@ public class ComponenteVue : IComponentes
 
       try
       {
-         var ruta = $"{_DIRECTORIO_RAIZ}/components/{rutaComponente}";
          Directory.CreateDirectory(ruta[..ruta.IndexOf(ruta.Split("/").Last())]);
          File.WriteAllText(ruta, componenteVue);
 
-         Console.WriteLine($"Componente creado correctamente en: {_DIRECTORIO_RAIZ}/{rutaComponente}");
+         Console.WriteLine($"Componente creado correctamente en: {ruta}");
       }
       catch (Exception e)
       {
